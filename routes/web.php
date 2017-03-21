@@ -55,5 +55,24 @@ Route::get('/tasks', 'ManagerController@tasks')->middleware('manager');
 //two paragemeter, email and activationcode
 Route::get('/activate/{email}/{activationCode}', 'ActivationController@activate');
 
+//ecommece
+Route::get('/shop', function(){
+    return view('shop.index');
+});
 
+Route::get('/profile', function(){
+   return view('user.profile');
+});
+
+Route::get('/add-to-cart/{id}', [
+    'as'=>'product.addToCart',
+    'uses'=> 'ProductController@getAddToCart'
+
+]);
+
+Route::get('/shopping-cart', [
+    'as'=>'product.shoppingCart',
+    'uses'=> 'ProductController@getCart'
+
+]);
 
