@@ -81,3 +81,7 @@ Route::get('/checkout', [
     'uses'=>'ProductController@getCheckout'
 ]);
 
+Route::post('/checkout', [
+    'as'=>'checkout',
+    'uses'=>'ProductController@postCheckout'
+]);
