@@ -69,10 +69,15 @@ Route::get('/add-to-cart/{id}', [
     'uses'=> 'ProductController@getAddToCart'
 
 ]);
-
+//'as' part is used in route function
 Route::get('/shopping-cart', [
     'as'=>'product.shoppingCart',
     'uses'=> 'ProductController@getCart'
 
+]);
+
+Route::get('/checkout', [
+    'as'=>'checkout',
+    'uses'=>'ProductController@getCheckout'
 ]);
 
