@@ -10,6 +10,7 @@ use App\Cart;
 use App\Http\Requests;
 
 use Session;
+use Stripe\Stripe;
 
 class ProductController extends Controller
 {
@@ -106,4 +107,33 @@ class ProductController extends Controller
         $cart=new Cart($oldCart);
         return view('shop.checkout', ['total'=>$cart->totalPrice]);
     }
+
+    public function postCheckout(Request $request)
+    {
+        if(!Session::has('cart')){
+            return redirect()->route('shop.shoppingCart');
+        }
+        $oldCart = Session::get('cart');
+        $cart=new Cart($oldCart);
+        //this one use Stripe\Stripe at the top of the file
+        Stripe::setApiKey('sk_test_hVh8ucRpY5eT7DPe3t1YsmKm');
+        //create charge, example at https://stripe.com/docs/api/php#create_charge
+        try{
+            //or you can use Stripe\Charge at the top of the file, and then just Charge::create
+        \Stripe\Charge::create(array(
+            //stripe use cents as default unit, that is why we *100
+            "amount" => $cart->totalPrice*100,
+            "currency" => "sek",
+            //stripeToken is the input name for form append in my checkout.js file
+            "source" => $request->input('stripeToken'), // obtained with Stripe.js
+            "description" => "Test Charge"
+        ));
+        } catch (\Exception $e){
+            return redirect()->route('checkout')->with('error', $e->getMessage());
+        }
+        //clear shopped items in cart
+        Session::forget('cart');
+        return redirect()->route('product.index')->with('success', 'Successfully purchased products!');
+    }
+
 }

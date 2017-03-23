@@ -11,6 +11,13 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3">
             <h1>Checkout</h1>
             <h4>Your Total: ${{$total}}</h4>
+
+            <!--this div section is placed before opening the form and it checks whether the session has an error -->
+            <!--if there is no error, the div section is hided, otherwise output an error if there is-->
+            <!--class="alert alert-danger is boostrap class-->
+            <div id="charge-error" class="alert alert-danger {{!Session::has('error') ? 'hidden' : ''}}">
+                {{Session::get('error')}}
+            </div>
             <form action="{{route('checkout')}}" method="post" id="checkout-form">
                 <div class="row">
                     <div class="col-xs-12">
