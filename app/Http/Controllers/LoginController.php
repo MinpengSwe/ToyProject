@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Sentinel;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
+use Session;
 
 class LoginController extends Controller
 {
@@ -23,10 +24,27 @@ class LoginController extends Controller
             {
                 $slug=Sentinel::getUser()->roles()->first()->slug;
 
-                if($slug == 'admin')
-                    return redirect('/earnings');
-                elseif($slug == 'manager')
-                    return redirect('/tasks');
+                if($slug == 'admin'){
+                    //return redirect('/earnings');
+
+                    if(Session::has('oldUrl')){
+                        $oldUrl = Session::get('oldUrl');
+                        Session::forget('oldUrl');
+                        return redirect()->to($oldUrl);
+                    }
+                    return redirect('/profile');
+                }
+                elseif($slug == 'manager'){
+                    //return redirect('/tasks');
+                    if(Session::has('oldUrl')){
+                        $oldUrl = Session::get('oldUrl');
+                        Session::forget('oldUrl');
+                        return redirect()->to($oldUrl);
+                    }
+                    return redirect('/profile');
+                }
+                else
+                    return redirect('/product');
             }
             else{
                 return redirect()->back()->with(['error' => 'Wrong credentials.']);

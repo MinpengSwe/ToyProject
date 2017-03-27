@@ -23,13 +23,17 @@
                     <div class="col-xs-12">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" id="name" class="form-control" required>
+                            <!--added name attribute "name" in order to be used in ProductController.php-->
+                            <!--in $order->name = $request->input('name'); -->
+                            <input type="text" id="name" class="form-control" name="name" required >
                         </div>
                     </div>
                     <div class="col-xs-12">
                         <div class="form-group">
                             <label for="address">Address</label>
-                            <input type="text" id="address" class="form-control" required>
+                            <!--added name attribute "address" in order to be used in ProductController.php-->
+                            <!--in $order->address = $request->input('address'); -->
+                            <input type="text" id="address" class="form-control" name="address" required>
                         </div>
                     </div>
                     <hr>

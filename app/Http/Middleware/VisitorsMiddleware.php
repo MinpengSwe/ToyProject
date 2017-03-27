@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Sentinel;
+use Session;
 
 class VisitorsMiddleware
 {
@@ -19,6 +20,8 @@ class VisitorsMiddleware
         if(!Sentinel::check())
             return $next($request);
         else
-            return redirect('/');
+            //new added on 2017-03-27
+            //Session::put('oldUrl', $request->url());
+            return redirect('/product');
     }
 }

@@ -32,7 +32,8 @@ Route::get('help', function () {
 
 Route::resource('product', 'ProductController');
 
-Route::group(['middleware'=>'visitors'], function(){
+//check the kernel.php, and it defines the middleware
+Route::group(['middleware' => 'visitors'], function () {
     Route::get('/register', 'RegistrationController@register');
     Route::post('/register', 'RegistrationController@postRegister');
 
@@ -78,10 +79,12 @@ Route::get('/shopping-cart', [
 
 Route::get('/checkout', [
     'as'=>'checkout',
-    'uses'=>'ProductController@getCheckout'
+    'uses'=>'ProductController@getCheckout',
+//    'middleware' => 'auth'
 ]);
 
 Route::post('/checkout', [
     'as'=>'checkout',
-    'uses'=>'ProductController@postCheckout'
+    'uses'=>'ProductController@postCheckout',
+  //  'middleware' => 'auth'
 ]);

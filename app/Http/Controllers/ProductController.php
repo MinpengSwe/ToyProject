@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 //use Illuminate\Contracts\Session\Session;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Request;
 use App\Product;
 use App\Cart;
+use App\Order;
 use App\Http\Requests;
+use App\User;
+//use Auth;
 
 use Session;
 use Stripe\Stripe;
@@ -120,14 +125,35 @@ class ProductController extends Controller
         //create charge, example at https://stripe.com/docs/api/php#create_charge
         try{
             //or you can use Stripe\Charge at the top of the file, and then just Charge::create
-        \Stripe\Charge::create(array(
-            //stripe use cents as default unit, that is why we *100
-            "amount" => $cart->totalPrice*100,
-            "currency" => "sek",
-            //stripeToken is the input name for form append in my checkout.js file
-            "source" => $request->input('stripeToken'), // obtained with Stripe.js
-            "description" => "Test Charge"
-        ));
+            $charge=\Stripe\Charge::create(array(
+                //stripe use cents as default unit, that is why we *100
+                "amount" => $cart->totalPrice*100,
+                "currency" => "sek",
+                //stripeToken is the input name for form append in my checkout.js file
+                "source" => $request->input('stripeToken'), // obtained with Stripe.js
+                "description" => "Test Charge"
+            ));
+            $order=new Order();
+            //serialize is a build in php function and it takes the cart object and convert it into a string
+            $order->cart = serialize($cart);
+            //get address and name value from checkout page inputs
+            $order->address = $request->input('address');
+            $order->name = $request->input('name');
+            $order->payment_id = $charge->id;//u can find stripe documents to see there is an id attribute on Charge class
+
+            //take authenticated user for orders attributes and save its relationship with order
+            //Auth::user()->orders()->save($order);
+            //dd(Auth::user());
+            //dd(Auth::getUser());
+            //dd(Sentinel::getUser()->id);
+            $userId=Sentinel::getUser()->id;
+
+            $user = User::find($userId);
+            $user->orders()->save($order);//save the relationship
+            //dd($user);
+            //$user = Sentinel::findById(1);
+            //dd($user);
+            //Sentinel::getUser()->orders()->save($order);
         } catch (\Exception $e){
             return redirect()->route('checkout')->with('error', $e->getMessage());
         }

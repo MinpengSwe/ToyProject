@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return static::whereEmail($email)->first();
     }
+
+    //one user can have many orders, relationship defined here
+    public function orders(){
+        return $this->hasMany('App\Order');
+    }
 }

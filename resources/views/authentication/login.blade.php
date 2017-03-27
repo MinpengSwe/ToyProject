@@ -39,6 +39,7 @@
                         </div>
 
                         <a href="/forgot-password">Forgot your password?</a>
+                        <p>Don't have an account? <a href="/register">Sign up</a></p>
 
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn btn-success pull-right">
