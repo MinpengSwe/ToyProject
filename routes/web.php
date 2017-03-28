@@ -61,9 +61,7 @@ Route::get('/shop', function(){
     return view('shop.index');
 });
 
-Route::get('/profile', function(){
-   return view('user.profile');
-});
+Route::get('/profile', 'UserController@getProfile');
 
 Route::get('/add-to-cart/{id}', [
     'as'=>'product.addToCart',
@@ -87,4 +85,14 @@ Route::post('/checkout', [
     'as'=>'checkout',
     'uses'=>'ProductController@postCheckout',
   //  'middleware' => 'auth'
+]);
+
+Route::get('/reduce/{id}', [
+    'uses' => 'ProductController@getReduceByOne',
+    'as' => 'product.reduceByOne'
+]);
+
+Route::get('/remove/{id}', [
+    'uses' => 'ProductController@getRemoveItem',
+    'as' => 'product.remove'
 ]);
