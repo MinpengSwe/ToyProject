@@ -33,7 +33,7 @@ Route::get('help', function () {
 Route::resource('product', 'ProductController');
 
 //check the kernel.php, and it defines the middleware
-Route::group(['middleware' => 'visitors'], function () {
+Route::group(['middleware' => 'user'], function () {
     Route::get('/register', 'RegistrationController@register');
     Route::post('/register', 'RegistrationController@postRegister');
 
@@ -49,7 +49,13 @@ Route::group(['middleware' => 'visitors'], function () {
 Route::get('/logout', 'LoginController@logout');
 
 //this add admin middleware to earning route
-Route::get('/earnings', 'AdminController@earnings')->middleware('admin');
+Route::get('/admin', 'AdminController@Index')->middleware('admin');
+
+Route::post('/assignRole', [
+    'as' => 'assignRole',
+    'uses'=>'AdminController@postAdminAssignRoles',
+    'middleware' => 'admin'
+]);
 
 Route::get('/tasks', 'ManagerController@tasks')->middleware('manager');
 

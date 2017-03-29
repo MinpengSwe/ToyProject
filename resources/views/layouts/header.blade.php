@@ -12,6 +12,7 @@
             <a class="navbar-brand" href="{{route('product.index')}}">Brand</a>
             @if(Sentinel::check())
                 <p class="navbar-text">Signed in as {{Sentinel::getUser()->first_name}}</p>
+                <p class="navbar-text">your role is {{Sentinel::getUser()->roles()->first()->slug}}</p>
             @endif
 
         </div>

@@ -9,6 +9,7 @@ use Activation;
 use App\User;
 use Mail;
 use Illuminate\Database\QueryException;
+use App\Role;
 
 class RegistrationController extends Controller
 {
@@ -26,7 +27,8 @@ class RegistrationController extends Controller
             $user = Sentinel::register($request->all());
             $activation = Activation::create($user);
 // dd($activation);
-            $role = Sentinel::findRoleBySlug('manager');
+            //$role = Sentinel::findRoleBySlug('user');
+            $role=Role::where('name', 'user')->first();
             //relationship and method
             $role->users()->attach($user);
             $this->sendEmail($user, $activation->code);
