@@ -10,6 +10,10 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{route('product.index')}}">Brand</a>
+            @if(Sentinel::check())
+                <p class="navbar-text">Signed in as {{Sentinel::getUser()->first_name}}</p>
+            @endif
+
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

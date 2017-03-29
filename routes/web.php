@@ -13,7 +13,7 @@
 
 Route::get('/', [
     'as' => '/',
-    'uses' => 'PagesController@getIndex'
+    'uses' => 'ProductController@Index'
 ]);
 
 Route::get('about', [
@@ -46,7 +46,7 @@ Route::group(['middleware' => 'visitors'], function () {
 });
 
 
-Route::post('/logout', 'LoginController@logout');
+Route::get('/logout', 'LoginController@logout');
 
 //this add admin middleware to earning route
 Route::get('/earnings', 'AdminController@earnings')->middleware('admin');
@@ -57,9 +57,12 @@ Route::get('/tasks', 'ManagerController@tasks')->middleware('manager');
 Route::get('/activate/{email}/{activationCode}', 'ActivationController@activate');
 
 //ecommece
+/*
 Route::get('/shop', function(){
     return view('shop.index');
 });
+*/
+
 
 Route::get('/profile', 'UserController@getProfile');
 
@@ -70,15 +73,19 @@ Route::get('/add-to-cart/{id}', [
 ]);
 //'as' part is used in route function
 Route::get('/shopping-cart', [
-    'as'=>'product.shoppingCart',
-    'uses'=> 'ProductController@getCart'
-
+    'as'=>'product.shoppingCart', //e.g route('product.shoppingCart') => "http://localhost:8000/shopping-cart"
+    'uses'=> 'ProductController@getCart',
+    //middleware is a filter, in this case, preventing unauthrized user access to a customers shopping cart
+    //if the user is not 'auth', 'admin', 'manager', then getCart method in ProductController is not even called
+    //'middleware' => 'auth',
+    //'middleware' => 'admin',
+    //'middleware' => 'manager'
 ]);
 
 Route::get('/checkout', [
     'as'=>'checkout',
     'uses'=>'ProductController@getCheckout',
-//    'middleware' => 'auth'
+ //   'middleware' => 'auth'
 ]);
 
 Route::post('/checkout', [

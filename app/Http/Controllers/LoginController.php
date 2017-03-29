@@ -32,7 +32,7 @@ class LoginController extends Controller
                         Session::forget('oldUrl');
                         return redirect()->to($oldUrl);
                     }
-                    return redirect('/profile');
+                    return redirect('/product');
                 }
                 elseif($slug == 'manager'){
                     //return redirect('/tasks');
@@ -41,7 +41,7 @@ class LoginController extends Controller
                         Session::forget('oldUrl');
                         return redirect()->to($oldUrl);
                     }
-                    return redirect('/profile');
+                    return redirect('/product');
                 }
                 else
                     return redirect('/product');

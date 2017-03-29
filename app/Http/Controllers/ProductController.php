@@ -97,39 +97,44 @@ class ProductController extends Controller
 
     public function getReduceByOne($id){
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        //dd($oldCart);
         $cart = new Cart($oldCart);
-        $cart->reduceByone($id);
-
         if(count($cart->items) > 0){
+            $cart->reduceByone($id);
             Session::put('cart', $cart);
         }else{
             Session::forget('cart'); //this removes the cart
         }
-
         return redirect()->route('product.shoppingCart');
     }
 
     public function getRemoveItem($id){
         $oldCart = Session::has('cart') ? Session::get('cart') : null;
         $cart = new Cart($oldCart);
-        $cart->removeItem($id);
+
 
         if(count($cart->items) > 0){
+            $cart->removeItem($id);
             Session::put('cart', $cart);
         }else{
             Session::forget('cart'); //this removes the cart
         }
-        
+
         return redirect()->route('product.shoppingCart');
     }
 
     public function getCart(){
-        if(!Session::has('cart')){
-            return view('shop.shopping-cart', ['products' => null]);
-        }
-        $oldCart = Session::get('cart');
-        $cart=new Cart($oldCart);
-        return view('shop.shopping-cart',['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+     //   if(Sentinel::check()){
+            if(!Session::has('cart')){
+                return view('shop.shopping-cart', ['products' => null]);
+            }
+            //dd(Session::has('cart'));
+            $oldCart = Session::get('cart');
+            $cart=new Cart($oldCart);
+            return view('shop.shopping-cart',['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+       //  }
+       // else
+         //   return redirect()->route('product.index');
     }
 
     public function getCheckout(){

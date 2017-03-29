@@ -3,7 +3,7 @@
         <ul class="nav nav-pills pull-right">
             @if(Sentinel::check())
                 <li role="presentation">
-                    <form action="/logout" method="post" id="logout-form">
+                    <form action="/logout" method="get" id="logout-form">
                         {{csrf_field()}}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                     </form>
